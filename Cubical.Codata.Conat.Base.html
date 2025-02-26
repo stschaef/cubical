@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Cubical.Codata.Conat.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">{- Conatural numbers (Tesla Zhang, Feb. 2019)
+
+This file defines:
+
+- A coinductive natural number representation which is dual to
+  the inductive version (zero | suc Nat → Nat) of natural numbers.
+
+- Trivial operations (succ, pred) and the pattern synonyms on conaturals.
+
+While this definition can be seen as a coinductive wrapper of an inductive
+datatype, another way of definition is to define an inductive datatype that
+wraps a coinductive thunk of Nat.
+The standard library uses the second approach:
+
+https://github.com/agda/agda-stdlib/blob/master/src/Codata/Conat.agda
+
+The first approach is chosen to exploit guarded recursion and to avoid the use
+of Sized Types.
+-}</a>
+
+<a id="677" class="Symbol">{-#</a> <a id="681" class="Keyword">OPTIONS</a> <a id="689" class="Pragma">--safe</a> <a id="696" class="Pragma">--guardedness</a> <a id="710" class="Symbol">#-}</a>
+<a id="714" class="Keyword">module</a> <a id="721" href="Cubical.Codata.Conat.Base.html" class="Module">Cubical.Codata.Conat.Base</a> <a id="747" class="Keyword">where</a>
+
+<a id="754" class="Keyword">open</a> <a id="759" class="Keyword">import</a> <a id="766" href="Cubical.Foundations.Prelude.html" class="Module">Cubical.Foundations.Prelude</a>
+
+<a id="795" class="Keyword">open</a> <a id="800" class="Keyword">import</a> <a id="807" href="Cubical.Data.Unit.html" class="Module">Cubical.Data.Unit</a>
+<a id="825" class="Keyword">open</a> <a id="830" class="Keyword">import</a> <a id="837" href="Cubical.Data.Sum.html" class="Module">Cubical.Data.Sum</a>
+
+<a id="855" class="Keyword">record</a> <a id="Conat"></a><a id="862" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a> <a id="868" class="Symbol">:</a> <a id="870" href="Agda.Primitive.html#388" class="Primitive">Type₀</a>
+<a id="Conat′"></a><a id="876" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a> <a id="883" class="Symbol">=</a> <a id="885" href="Cubical.Data.Unit.Base.html#172" class="Record">Unit</a> <a id="890" href="Cubical.Data.Sum.Base.html#207" class="Datatype Operator">⊎</a> <a id="892" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a>
+<a id="898" class="Keyword">record</a> <a id="905" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a> <a id="911" class="Keyword">where</a>
+  <a id="919" class="Keyword">coinductive</a>
+  <a id="933" class="Keyword">field</a> <a id="Conat.force"></a><a id="939" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="945" class="Symbol">:</a> <a id="947" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a>
+<a id="954" class="Keyword">open</a> <a id="959" href="Cubical.Codata.Conat.Base.html#862" class="Module">Conat</a> <a id="965" class="Keyword">public</a>
+
+<a id="973" class="Keyword">pattern</a> <a id="zero"></a><a id="981" href="Cubical.Codata.Conat.Base.html#981" class="InductiveConstructor">zero</a>  <a id="987" class="Symbol">=</a> <a id="989" href="Cubical.Data.Sum.Base.html#265" class="InductiveConstructor">inl</a> <a id="993" href="Agda.Builtin.Unit.html#212" class="InductiveConstructor">tt</a>
+<a id="996" class="Keyword">pattern</a> <a id="suc"></a><a id="1004" href="Cubical.Codata.Conat.Base.html#1004" class="InductiveConstructor">suc</a> <a id="1008" href="Cubical.Codata.Conat.Base.html#1016" class="Bound">n</a> <a id="1010" class="Symbol">=</a> <a id="1012" href="Cubical.Data.Sum.Base.html#283" class="InductiveConstructor">inr</a> <a id="1016" href="Cubical.Codata.Conat.Base.html#1016" class="Bound">n</a>
+
+<a id="conat"></a><a id="1019" href="Cubical.Codata.Conat.Base.html#1019" class="Function">conat</a> <a id="1025" class="Symbol">:</a> <a id="1027" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a> <a id="1034" class="Symbol">→</a> <a id="1036" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a>
+<a id="1042" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="1048" class="Symbol">(</a><a id="1049" href="Cubical.Codata.Conat.Base.html#1019" class="Function">conat</a> <a id="1055" href="Cubical.Codata.Conat.Base.html#1055" class="Bound">a</a><a id="1056" class="Symbol">)</a> <a id="1058" class="Symbol">=</a> <a id="1060" href="Cubical.Codata.Conat.Base.html#1055" class="Bound">a</a>
+
+<a id="succ"></a><a id="1063" href="Cubical.Codata.Conat.Base.html#1063" class="Function">succ</a> <a id="1068" class="Symbol">:</a> <a id="1070" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a> <a id="1076" class="Symbol">→</a> <a id="1078" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a>
+<a id="1084" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="1090" class="Symbol">(</a><a id="1091" href="Cubical.Codata.Conat.Base.html#1063" class="Function">succ</a> <a id="1096" href="Cubical.Codata.Conat.Base.html#1096" class="Bound">a</a><a id="1097" class="Symbol">)</a> <a id="1099" class="Symbol">=</a> <a id="1101" href="Cubical.Codata.Conat.Base.html#1004" class="InductiveConstructor">suc</a> <a id="1105" href="Cubical.Codata.Conat.Base.html#1096" class="Bound">a</a>
+
+<a id="succ′"></a><a id="1108" href="Cubical.Codata.Conat.Base.html#1108" class="Function">succ′</a> <a id="1114" class="Symbol">:</a> <a id="1116" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a> <a id="1123" class="Symbol">→</a> <a id="1125" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a>
+<a id="1132" href="Cubical.Codata.Conat.Base.html#1108" class="Function">succ′</a> <a id="1138" href="Cubical.Codata.Conat.Base.html#1138" class="Bound">n</a> <a id="1140" class="Symbol">=</a> <a id="1142" href="Cubical.Codata.Conat.Base.html#1004" class="InductiveConstructor">suc</a> <a id="1146" class="Symbol">λ</a> <a id="1148" class="Keyword">where</a> <a id="1154" class="Symbol">.</a><a id="1155" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="1161" class="Symbol">→</a> <a id="1163" href="Cubical.Codata.Conat.Base.html#1138" class="Bound">n</a>
+
+<a id="pred′"></a><a id="1166" href="Cubical.Codata.Conat.Base.html#1166" class="Function">pred′</a> <a id="1172" class="Symbol">:</a> <a id="1174" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a> <a id="1181" class="Symbol">→</a> <a id="1183" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a>
+<a id="1190" href="Cubical.Codata.Conat.Base.html#1166" class="Function">pred′</a>  <a id="1197" href="Cubical.Codata.Conat.Base.html#981" class="InductiveConstructor">zero</a>   <a id="1204" class="Symbol">=</a> <a id="1206" href="Cubical.Codata.Conat.Base.html#981" class="InductiveConstructor">zero</a>
+<a id="1211" href="Cubical.Codata.Conat.Base.html#1166" class="Function">pred′</a> <a id="1217" class="Symbol">(</a><a id="1218" href="Cubical.Codata.Conat.Base.html#1004" class="InductiveConstructor">suc</a> <a id="1222" href="Cubical.Codata.Conat.Base.html#1222" class="Bound">x</a><a id="1223" class="Symbol">)</a> <a id="1225" class="Symbol">=</a> <a id="1227" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="1233" href="Cubical.Codata.Conat.Base.html#1222" class="Bound">x</a>
+
+<a id="pred′′"></a><a id="1236" href="Cubical.Codata.Conat.Base.html#1236" class="Function">pred′′</a> <a id="1243" class="Symbol">:</a> <a id="1245" href="Cubical.Codata.Conat.Base.html#876" class="Function">Conat′</a> <a id="1252" class="Symbol">→</a> <a id="1254" href="Cubical.Codata.Conat.Base.html#862" class="Record">Conat</a>
+<a id="1260" href="Cubical.Codata.Conat.Base.html#939" class="Field">force</a> <a id="1266" class="Symbol">(</a><a id="1267" href="Cubical.Codata.Conat.Base.html#1236" class="Function">pred′′</a> <a id="1274" href="Cubical.Codata.Conat.Base.html#981" class="InductiveConstructor">zero</a><a id="1278" class="Symbol">)</a> <a id="1280" class="Symbol">=</a> <a id="1282" href="Cubical.Codata.Conat.Base.html#981" class="InductiveConstructor">zero</a>
+<a id="1287" href="Cubical.Codata.Conat.Base.html#1236" class="Function">pred′′</a> <a id="1294" class="Symbol">(</a><a id="1295" href="Cubical.Codata.Conat.Base.html#1004" class="InductiveConstructor">suc</a> <a id="1299" href="Cubical.Codata.Conat.Base.html#1299" class="Bound">x</a><a id="1300" class="Symbol">)</a> <a id="1302" class="Symbol">=</a> <a id="1304" href="Cubical.Codata.Conat.Base.html#1299" class="Bound">x</a>
+</pre></body></html>
